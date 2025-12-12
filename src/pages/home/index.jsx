@@ -1,12 +1,53 @@
 import { View } from "@tarojs/components";
-
+import PageLayout from "../../components/PageLayout";
 import "./index.less";
 
 const Home = () => {
   return (
-    <View className="home">
-      <View className="home-container">卜卦</View>
-    </View>
+    <PageLayout title="AI 卜卦">
+      <View className="home-content">
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+        <View>卜卦</View>
+      </View>
+    </PageLayout>
   );
 };
 

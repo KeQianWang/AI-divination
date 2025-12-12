@@ -1,12 +1,14 @@
 import { View } from "@tarojs/components";
-
+import PageLayout from "../../components/PageLayout";
 import "./index.less";
 
 const Chat = () => {
   return (
-    <View className="chat">
-      <View className="chat-container">对话</View>
-    </View>
+    <PageLayout title="大师算命">
+      <View className="chat-content">
+        <View>对话</View>
+      </View>
+    </PageLayout>
   );
 };
 

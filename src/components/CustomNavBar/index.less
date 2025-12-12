@@ -1,0 +1,92 @@
+.custom-nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #ffffff;
+  box-shadow: 0 2rpx 8rpx 0 rgba(0, 0, 0, 0.08);
+
+  .nav-bar-content {
+    display: flex;
+    align-items: center;
+    padding: 0 24rpx;
+  }
+
+  .nav-bar-left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 24rpx;
+  }
+
+  .nav-icon-wrapper {
+    width: 70rpx;
+    height: 70rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16rpx;
+    transition: all 0.2s ease;
+
+    &:active {
+      transform: scale(0.95);
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  .nav-icon {
+    width: 50rpx;
+    height: 50rpx;
+  }
+
+  .nav-bar-title {
+    flex: 1;
+    text-align: center;
+    font-size: 36rpx;
+    font-weight: 500;
+    color: #333;
+    letter-spacing: 2rpx;
+  }
+
+  .nav-bar-right {
+    flex: 1;
+  }
+}
+
+// 抽屉样式
+.drawer-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #fff;
+  //-webkit-overflow-scrolling: touch; // 流畅滚动
+  box-sizing: border-box; // 确保padding计算正确
+  .drawer-menu {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16rpx 0;
+
+    .menu-item {
+      padding: 15rpx 40rpx;
+      transition: background-color 0.2s ease;
+
+      &:active {
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+    }
+
+    .menu-text {
+      font-size: 32rpx;
+      color: #333;
+      line-height: 1.5;
+    }
+  }
+}
+
+
+
+
+.taroify-backdrop {
+  background-color: var(--backdrop-background-color, rgba(0, 0, 0, 0.1));
+}
