@@ -7,7 +7,8 @@ const PageLayout = ({
   title = "AI 卜卦",
   children,
   className = "",
-  background = "#f5f5f5"
+  background="linear-gradient(180deg, #0e0c18 0%, #1b1026 45%, #160a18 100%)"
+
 }) => {
   const { totalHeight } = useNavBarHeight();
 

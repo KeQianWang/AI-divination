@@ -8,7 +8,6 @@ export default defineAppConfig({
   },
 
   tabBar: {
-    custom: true,
     color: "#666",
     selectedColor: "#007AFF",
     backgroundColor: "#fff",
@@ -22,10 +21,11 @@ export default defineAppConfig({
       },
       {
         pagePath: "pages/chat/index",
-        text: "大师算命",
+        text: "玄门问道",
         iconPath: "assets/images/chat.png",
         selectedIconPath: "assets/images/selected-chat.png",
       },
     ],
   },
+  lazyCodeLoading: "requiredComponents"
 });
