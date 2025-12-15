@@ -1,153 +1,81 @@
-import { useState, useRef } from 'react'
-import Taro from '@tarojs/taro'
-import { View, Textarea, Input, Text } from '@tarojs/components'
-import {
-  UploadOutlined,
-  LinkOutlined,
-  SendOutlined,
-  PaperClipOutlined
-} from '@taroify/icons'
+import { Button, Input, View } from "@tarojs/components";
+import { useState } from "react";
 
-import './index.less'
+import Taro from "@tarojs/taro";
+import "./index.less";
 
-export default function InputArea({onSendMessage, disabled = false, placeholder = '輸入消息...'}) {
-  const [message, setMessage] = useState('')
-  const [showUrlInput, setShowUrlInput] = useState(false)
-  const [url, setUrl] = useState('')
-  const [attachments, setAttachments] = useState([])
-  const [height, setHeight] = useState(0)
-
+export default function InputArea({ onSendMessage, disabled = false }) {
+  const [text, setText] = useState("");
+  const [filePath, setFilePath] = useState("");
+  const [url, setUrl] = useState("");
+  const [isPanelVisible, setIsPanelVisible] = useState(false);
 
   const handleSend = () => {
-    if (!message.trim() && attachments.length === 0 && !url.trim()) return
+    if (!text.trim() && !filePath && !url) return;
+    onSendMessage({ text: text.trim(), filePath, url });
+    setText("");
+    setFilePath("");
+    setUrl("");
+    setIsPanelVisible(false);
+  };
 
-    onSendMessage?.(message, attachments, url)
-
-    setMessage('')
-    setUrl('')
-    setAttachments([])
-    setShowUrlInput(false)
-  }
-
-  const handleChooseFile = async () => {
-    if (disabled) return
-
+  const chooseFile = async () => {
     try {
       const res = await Taro.chooseMessageFile({
-        count: 5,
-        type: 'file'
-      })
-
-      const validFiles = res.tempFiles.filter(file =>
-        /\.(pdf|txt|md)$/i.test(file.name)
-      )
-
-      setAttachments(prev => [...prev, ...validFiles])
-    } catch (err) {
-      console.warn('选择文件失败', err)
+        count: 1,
+        type: "file",
+      });
+      setFilePath(res.tempFiles[0].path);
+      Taro.showToast({ title: "文件已选择", icon: "success" });
+    } catch (e) {
+      Taro.showToast({ title: "取消选择", icon: "none" });
     }
-  }
+  };
 
-  const removeAttachment = (index) => {
-    setAttachments(prev => prev.filter((_, i) => i !== index))
-  }
+  const togglePanel = () => {
+    setIsPanelVisible(!isPanelVisible);
+  };
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      handleSend()
-    }
-  }
-
-  const getHeight = (e) => {
-    const height = e?.detail?.height === 0 ? 0 : e.detail.height
-    setHeight(height)
-  }
-  const resetHeight = () => {
-    setHeight(0)
-  }
   return (
-    <View className="inputAreaContainer">
-      {/* 附件 */}
-      {attachments.length > 0 && (
-        <View className="attachments">
-          {attachments.map((file, index) => (
-            <View key={index} className="attachmentItem">
-              {/*<PaperClipOutlined />*/}
-              <Text className="fileName">{file.name}</Text>
-              <Text
-                className="removeBtn"
-                onClick={() => removeAttachment(index)}
-              >
-                ×
-              </Text>
-            </View>
-          ))}
-        </View>
-      )}
-
-      {/* URL 输入 */}
-      {showUrlInput && (
-        <View className="urlInput">
-          <Input
-            type="text"
-            placeholder="輸入網頁URL以添加到知識庫..."
-            value={url}
-            onInput={e => setUrl(e.detail.value)}
-            className="urlField"
-          />
-          <Text
-            className="closeBtn"
-            onClick={() => setShowUrlInput(false)}
-          >
-            ×
-          </Text>
-        </View>
-      )}
-
-      <View className="inputContainer">
-        {/* 工具按钮 */}
-        <View className="toolButtons">
-          <View className="toolBtn" onClick={handleChooseFile}>
-            {/*<UploadOutlined />*/}
-          </View>
-
-          <View
-            className="toolBtn"
-            onClick={() => setShowUrlInput(!showUrlInput)}
-          >
-            {/*<LinkOutlined />*/}
-          </View>
-        </View>
-
-        {/* 输入框 */}
-        <Textarea
-          style={{bottom: height + 'px'}}
-          value={message}
-          onInput={e => setMessage(e.detail.value)}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder}
-          adjustPosition={false}
-          disabled={disabled}
-          autoHeight
-          className="messageInput"
-          onFocus={(e) => getHeight(e)}
-          onBlur={resetHeight}
+    <View className="input-area-container">
+      <View className="chat-input-bar">
+        <Input
+          className="input"
+          type="text"
+          placeholder="请输入消息"
+          value={text}
+          onInput={(e) => setText(e.detail.value)}
+          confirmType="send"
+          onConfirm={handleSend}
         />
-
-        {/* 发送按钮 */}
-        <View
-          className={`sendBtn ${
-            disabled ||
-            (!message.trim() && attachments.length === 0 && !url.trim())
-              ? 'disabled'
-              : ''
-          }`}
-          onClick={handleSend}
-        >
-          {/*<SendOutlined />*/}
+        <View className="multi-function-btn" onClick={togglePanel}>
+          +
         </View>
+        <Button className="send-btn" size="mini" onClick={handleSend}>
+          发送
+        </Button>
       </View>
+      {isPanelVisible && (
+        <View className="function-panel">
+          <View className="panel-item" onClick={chooseFile}>
+            <View className="panel-icon">📁</View>
+            <View className="panel-text">选择文件</View>
+          </View>
+          <View className="panel-item">
+            <View className="panel-input-wrapper">
+              <View className="panel-icon">🔗</View>
+              <Input
+                className="panel-input"
+                type="text"
+                placeholder="输入URL"
+                placeholderStyle="color:#dad3d3"
+                onInput={(e) => setUrl(e.detail.value)}
+                maxlength={-1}
+              />
+            </View>
+          </View>
+        </View>
+      )}
     </View>
-  )
+  );
 }

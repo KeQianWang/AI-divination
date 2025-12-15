@@ -1,11 +1,9 @@
-// MessageList.jsx
-import {View, ScrollView, Text} from '@tarojs/components';
-import { useEffect, useState } from 'react';
-import './index.less';
+import { ScrollView, Text, View } from "@tarojs/components";
+import { useEffect, useState } from "react";
+import "./index.less";
 
 const MessageList = ({ messages = [], isLoading = false }) => {
-  /* 用来驱动 scroll-into-view */
-  const [intoView, setIntoView] = useState('');
+  const [intoView, setIntoView] = useState("");
 
   /* 每次消息变化就滚到底 */
   useEffect(() => {
@@ -17,12 +15,12 @@ const MessageList = ({ messages = [], isLoading = false }) => {
 
   const getMoodEmoji = (mood) => {
     const map = {
-      default: '😊',
-      friendly: '😊',
-      upbeat: '😄',
-      angry: '😠',
-      depressed: '😔',
-      cheerful: '😃'
+      default: "😊",
+      friendly: "😊",
+      upbeat: "😄",
+      angry: "😠",
+      depressed: "😔",
+      cheerful: "😃",
     };
     return map[mood] || map.default;
   };
@@ -38,18 +36,18 @@ const MessageList = ({ messages = [], isLoading = false }) => {
         {messages.map((msg) => (
           <View
             key={msg.id}
-            id={`msg-${msg.id}`}   /* 给每条消息一个唯一 id */
+            id={`msg-${msg.id}`} /* 给每条消息一个唯一 id */
             className={`messageItem ${msg.role}`}
           >
             <View className="messageHeader">
               <Text className="messageRole">
-                {msg.role === 'user' ? '您' : '陳大師'}
+                {msg.role === "user" ? "您" : "陳大師"}
               </Text>
               {msg.mood && (
                 <Text className="moodIndicator">{getMoodEmoji(msg.mood)}</Text>
               )}
               <Text className="messageTime">
-                {msg.timestamp.toLocaleTimeString('zh-TW')}
+                {msg.timestamp.toLocaleTimeString("zh-TW")}
               </Text>
             </View>
 
