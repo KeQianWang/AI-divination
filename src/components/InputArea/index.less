@@ -1,91 +1,30 @@
 .input-area-container {
   width: 100%;
   background: #f7f7f7;
-  border-top: 1px solid #eee;
-  padding: 16px;
   box-sizing: border-box;
 
   .chat-input-bar {
     display: flex;
     align-items: center;
+    justify-content: space-around;
     width: 100%;
 
     .input {
       flex: 1;
-      height: 72px;
-      padding: 0 20px;
-      font-size: 28px;
+      height: 90rpx;
+      padding: 0 40rpx;
+      font-size: 34rpx;
       background: #fff;
-      border-radius: 8px;
-      border: 1px solid #ccc;
       color: #333;
     }
-
-    .multi-function-btn {
-      width: 64px;
-      height: 64px;
-      line-height: 64px;
-      text-align: center;
-      font-size: 40px;
-      margin: 0 16px;
-      cursor: pointer;
-      color: #666;
-    }
-
     .send-btn {
-      height: 64px;
-      line-height: 64px;
-      padding: 0 24px;
-      font-size: 28px;
+      height: 90rpx;
+      line-height: 90rpx;
+      padding: 0 48rpx;
+      font-size: 34rpx;
       color: #fff;
       background: #07c160;
-      border-radius: 8px;
-      border: none;
     }
   }
 
-  .function-panel {
-    display: flex;
-    margin-top: 16px;
-    background: #fff;
-    border-radius: 8px;
-    align-items: center;
-    justify-content: space-around;
-
-    .panel-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-right: 32px;
-      cursor: pointer;
-      justify-content: center;
-
-      .panel-icon {
-        font-size: 48px;
-      }
-
-      .panel-text {
-        font-size: 24px;
-        color: #666;
-        margin-top: 8px;
-      }
-
-      .panel-input-wrapper {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        .panel-icon {
-          font-size: 48px;
-          margin-right: 16px;
-        }
-        .panel-input {
-          flex: 1;
-          height: 64px;
-          font-size: 28px;
-          border-bottom: 1rpx solid #607D8B;
-          color: #333;
-        }
-      }
-    }
-  }
 }

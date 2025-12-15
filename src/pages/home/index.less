@@ -2,35 +2,16 @@
   padding: 48rpx 32rpx 64rpx;
   color: #f5f2ff;
   font-family: "PingFang SC", "Noto Serif SC", serif;
-  .home-hero {
-    text-align: center;
-    padding: 40rpx 20rpx 60rpx;
-
-    .hero-eyebrow {
-      font-size: 32rpx;
-      letter-spacing: 6rpx;
-      color: #d8c3ff;
-    }
-
-    .hero-title {
-      margin-top: 20rpx;
-      font-size: 56rpx;
-      font-weight: 600;
-      letter-spacing: 4rpx;
-    }
-
-    .hero-subtitle {
-      margin-top: 24rpx;
-      font-size: 28rpx;
-      line-height: 44rpx;
-      color: #c2b4dd;
-    }
-  }
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 
   .feature-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300rpx, 1fr));
-    gap: 32rpx;
+    gap: 44rpx;
     .feature-card {
       position: relative;
       padding: 40rpx 32rpx;

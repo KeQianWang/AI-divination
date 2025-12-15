@@ -1,15 +1,9 @@
 import { View } from "@tarojs/components";
-import CustomNavBar from "../CustomNavBar";
 import useNavBarHeight from "../../hooks/useNavBarHeight";
+import CustomNavBar from "../CustomNavBar";
 import "./index.less";
 
-const PageLayout = ({
-  title = "AI 卜卦",
-  children,
-  className = "",
-  background="linear-gradient(180deg, #0e0c18 0%, #1b1026 45%, #160a18 100%)"
-
-}) => {
+const PageLayout = ({ title = "AI 卜卦", children, className = "" }) => {
   const { totalHeight } = useNavBarHeight();
 
   return (
@@ -22,7 +16,6 @@ const PageLayout = ({
         className="page-content"
         style={{
           paddingTop: `${totalHeight}px`,
-          background
         }}
       >
         {children}
