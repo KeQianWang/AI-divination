@@ -1,0 +1,108 @@
+.bazi-form {
+  padding: 40rpx 32rpx;
+
+  .form-item {
+    margin-bottom: 32rpx;
+
+    .form-label {
+      font-size: 28rpx;
+      color: #b59dff;
+      margin-bottom: 16rpx;
+      letter-spacing: 1rpx;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 24rpx 28rpx;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1rpx solid rgba(255, 255, 255, 0.15);
+      border-radius: 16rpx;
+      font-size: 30rpx;
+      color: #f5f2ff;
+      transition: all 0.3s ease;
+
+      &::placeholder {
+        color: rgba(245, 242, 255, 0.4);
+      }
+
+      &:focus {
+        background: rgba(255, 255, 255, 0.12);
+        border-color: rgba(126, 157, 255, 0.5);
+      }
+    }
+
+    .form-picker {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24rpx 28rpx;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1rpx solid rgba(255, 255, 255, 0.15);
+      border-radius: 16rpx;
+      transition: all 0.3s ease;
+
+      &:active {
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .picker-value {
+        font-size: 30rpx;
+        color: #f5f2ff;
+      }
+
+      .picker-arrow {
+        font-size: 40rpx;
+        color: #b59dff;
+        font-weight: 300;
+        transform: rotate(-90deg);
+      }
+    }
+
+    &.half {
+      width: calc(50% - 16rpx);
+    }
+  }
+
+  .form-row {
+    display: flex;
+    gap: 32rpx;
+    margin-bottom: 32rpx;
+  }
+
+  .submit-button {
+    margin-top: 60rpx;
+    padding: 28rpx 80rpx;
+    background: linear-gradient(135deg, #7e9dff, #b59dff);
+    border-radius: 999rpx;
+    box-shadow:
+      0 8rpx 24rpx rgba(126, 157, 255, 0.4),
+      inset 0 2rpx 4rpx rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+
+    &:active {
+      transform: scale(0.98);
+      box-shadow:
+        0 4rpx 12rpx rgba(126, 157, 255, 0.3),
+        inset 0 2rpx 4rpx rgba(255, 255, 255, 0.2);
+    }
+
+    .button-text {
+      font-size: 32rpx;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 4rpx;
+      text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .form-notice {
+    margin-top: 32rpx;
+    text-align: center;
+    font-size: 24rpx;
+    color: #b59dff;
+    opacity: 0.6;
+    letter-spacing: 1rpx;
+  }
+}

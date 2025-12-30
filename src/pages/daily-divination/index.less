@@ -1,0 +1,146 @@
+.daily-divination-page {
+  .divination-content {
+    min-height: 100vh;
+    padding: 48rpx 32rpx 64rpx;
+    color: #f5f2ff;
+    font-family: "PingFang SC", "Noto Serif SC", serif;
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 40rpx;
+
+      .header-badge {
+        display: inline-block;
+        padding: 8rpx 24rpx;
+        margin-bottom: 16rpx;
+        border-radius: 999rpx;
+        border: 1rpx solid rgba(255, 255, 255, 0.3);
+        font-size: 24rpx;
+        color: #fefefe;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .header-title {
+        font-size: 52rpx;
+        font-weight: 600;
+        color: #ffffff;
+        margin-bottom: 20rpx;
+        letter-spacing: 4rpx;
+      }
+
+      .header-desc {
+        font-size: 28rpx;
+        line-height: 44rpx;
+        color: #dad1ef;
+        letter-spacing: 2rpx;
+      }
+    }
+
+    .result-section {
+      margin-top: 60rpx;
+      animation: fadeInUp 0.6s ease-out;
+
+      .result-card {
+        padding: 40rpx;
+        border-radius: 24rpx;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1rpx solid rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(10rpx);
+        box-shadow:
+          0 8rpx 32rpx rgba(0, 0, 0, 0.2),
+          inset 0 1rpx 0 rgba(255, 255, 255, 0.1);
+
+        .card-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 32rpx;
+          padding-bottom: 24rpx;
+          border-bottom: 1rpx solid rgba(255, 255, 255, 0.1);
+
+          .hexagram-name {
+            font-size: 44rpx;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: 2rpx;
+          }
+
+          .hexagram-type {
+            padding: 8rpx 20rpx;
+            border-radius: 999rpx;
+            font-size: 24rpx;
+            font-weight: 500;
+            letter-spacing: 1rpx;
+
+            &.good {
+              background: linear-gradient(135deg, #f8e3c9, #d9b07a);
+              color: #8b4513;
+            }
+
+            &.normal {
+              background: linear-gradient(135deg, #c0d6ff, #7e9dff);
+              color: #1a3a6b;
+            }
+          }
+        }
+
+        .card-body {
+          .fortune-item {
+            margin-bottom: 28rpx;
+
+            &:last-child {
+              margin-bottom: 0;
+            }
+
+            .fortune-label {
+              font-size: 26rpx;
+              color: #b59dff;
+              margin-bottom: 12rpx;
+              letter-spacing: 2rpx;
+            }
+
+            .fortune-text {
+              font-size: 30rpx;
+              line-height: 48rpx;
+              color: #f5f2ff;
+              letter-spacing: 1rpx;
+            }
+          }
+        }
+
+        .card-footer {
+          margin-top: 32rpx;
+          padding-top: 24rpx;
+          border-top: 1rpx solid rgba(255, 255, 255, 0.1);
+          text-align: right;
+
+          .date-text {
+            font-size: 24rpx;
+            color: #b59dff;
+            opacity: 0.8;
+          }
+        }
+      }
+
+      .notice-text {
+        margin-top: 32rpx;
+        text-align: center;
+        font-size: 24rpx;
+        color: #b59dff;
+        opacity: 0.6;
+        letter-spacing: 1rpx;
+      }
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

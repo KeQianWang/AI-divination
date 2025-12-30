@@ -1,5 +1,12 @@
 export default defineAppConfig({
-  pages: ["pages/home/index", "pages/chat/index", "pages/login/index"],
+  pages: [
+    "pages/home/index",
+    "pages/chat/index",
+    "pages/login/index",
+    "pages/daily-divination/index",
+    "pages/bazi-calculate/index",
+    "pages/dream-interpretation/index",
+  ],
   window: {
     backgroundTextStyle: "light",
     navigationStyle: "custom", // 使用自定义导航栏
