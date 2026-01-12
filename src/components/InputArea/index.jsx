@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import "./index.less";
 
-export default function InputArea({ onSendMessage, disabled = false }) {
+export default function InputArea({ onSendMessage, disabled = false, placeholder = "请输入消息" }) {
   const [text, setText] = useState("");
 
   const handleSend = () => {
@@ -18,7 +18,7 @@ export default function InputArea({ onSendMessage, disabled = false }) {
         <Input
           className="input"
           type="text"
-          placeholder="请输入消息"
+          placeholder={placeholder}
           value={text}
           onInput={(e) => setText(e.detail.value)}
           confirmType="send"
