@@ -36,6 +36,11 @@ const featureCards = [
 
 const Home = () => {
   const handleCardClick = (path) => {
+    const token = Taro.getStorageSync('token');
+    if (!token) {
+      Taro.navigateTo({ url: '/pages/login/index' });
+      return;
+    }
     Taro.navigateTo({ url: path });
   };
 

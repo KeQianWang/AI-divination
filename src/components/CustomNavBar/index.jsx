@@ -1,44 +1,86 @@
 import { Popup } from "@taroify/core";
 import { Image, Text, View } from "@tarojs/components";
 import Taro from "@tarojs/taro";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getRecentChats } from "../../services/chat";
 import useNavBarHeight from "../../hooks/useNavBarHeight";
 import "./index.less";
 
-// 菜单配置
-const MENU_ITEMS = [
-  { text: "卜卦", url: "/pages/home/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "大师算命", url: "/pages/chat/index" },
-  { text: "卜卦", url: "/pages/home/index" },
-];
-
 const CustomNavBar = ({ title = "AI 卜卦" }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [menuItems, setMenuItems] = useState([
+    { text: "卜卦", url: "/pages/home/index" },
+  ]);
   const { statusBarHeight, navBarHeight } = useNavBarHeight();
 
+
+  const fetchChatHistory = async () => {
+    try {
+      const token = Taro.getStorageSync("token");
+      if (!token) {
+        return;
+      }
+
+      const response = await getRecentChats(7);
+
+      const chatsList = response?.chats || (Array.isArray(response) ? response : []);
+
+      if (Array.isArray(chatsList) && chatsList.length > 0) {
+        const sessionMap = new Map();
+
+        chatsList.forEach((item) => {
+          const sessionId = item.session_id || item.sessionId || "";
+          if (sessionId && !sessionMap.has(sessionId)) {
+            const displayText = item.title || item.user_message || item.query || item.content || `会话 ${sessionId.slice(0, 8)}`;
+            sessionMap.set(sessionId, {
+              text: displayText.length > 20 ? `${displayText.slice(0, 20)}...` : displayText,
+              url: `/pages/chat/index?session_id=${sessionId}`,
+              sessionId,
+            });
+          }
+        });
+
+        const chatItems = Array.from(sessionMap.values());
+        setMenuItems([
+          { text: "卜卦", url: "/pages/home/index" },
+          ...chatItems,
+        ]);
+      }
+    } catch (error) {
+      console.error("获取聊天历史失败:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (drawerOpen) {
+      fetchChatHistory();
+    }
+
+  }, [drawerOpen]);
+
   // 统一的导航处理函数
-  const handleNavigate = (url) => {
-    Taro.switchTab({ url });
+  const handleNavigate = (url, sessionId) => {
+    if (url.startsWith("/pages/home/index") || url.startsWith("/pages/chat/index")) {
+      const baseUrl = url.split("?")[0];
+      
+      const pages = Taro.getCurrentPages();
+      const currentPage = pages[pages.length - 1];
+      const isCurrentChatPage = currentPage?.route === "pages/chat/index";
+      
+      if (sessionId) {
+        Taro.setStorageSync("target_session_id", sessionId);
+        
+        if (isCurrentChatPage && baseUrl === "/pages/chat/index") {
+          Taro.eventCenter.trigger("switchChatSession", sessionId);
+        }
+      }
+      
+      if (!isCurrentChatPage || baseUrl !== "/pages/chat/index") {
+        Taro.switchTab({ url: baseUrl });
+      }
+    } else {
+      Taro.navigateTo({ url });
+    }
     setDrawerOpen(false);
   };
 
@@ -87,11 +129,11 @@ const CustomNavBar = ({ title = "AI 卜卦" }) => {
           style={{ paddingTop: `${statusBarHeight}px` }}
         >
           <View className="drawer-menu">
-            {MENU_ITEMS.map((item) => (
+            {menuItems.map((item, index) => (
               <View
-                key={item.url}
+                key={item.url || index}
                 className="menu-item"
-                onClick={() => handleNavigate(item.url)}
+                onClick={() => handleNavigate(item.url, item.sessionId)}
               >
                 <Text className="menu-text">{item.text}</Text>
               </View>
