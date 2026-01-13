@@ -5,7 +5,7 @@ import InputArea from "../../components/InputArea";
 import MessageList from "../../components/MessageList";
 import PageLayout from "../../components/PageLayout";
 import "./index.less";
-import { getChatHistory, chatStream } from "../../services/chat";
+import { getChatHistory, startChatStream } from "../../services/chat";
 
 const Chat = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -98,77 +98,93 @@ const Chat = () => {
     };
   }, []);
 
-  const handleSendMessage = async (input) => {
+  const handleSendMessage = (input) => {
     const query = input.text?.trim();
-    if (!query) {
-      return;
-    }
+    if (!query || isLoading) return;
 
-    let assistantMessageId = "";
+    const assistantId = `assistant-${Date.now()}`;
+    let streamedText = "";
 
-    try {
-      setIsLoading(true);
+    const ensureSessionId = (sid) => {
+      if (!sid) return;
+      setCurrentSessionId((prev) => (prev ? prev : sid));
+    };
 
-      const userMessage = {
+    const updateAssistant = (content, mood) =>
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === assistantId
+            ? { ...msg, content, mood: mood || msg.mood }
+            : msg
+        )
+      );
+
+    setIsLoading(true);
+    setMessages((prev) => [
+      ...prev,
+      {
         id: `user-${Date.now()}`,
         content: query,
         role: "user",
         mood: "default",
         timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, userMessage]);
-
-      assistantMessageId = `assistant-${Date.now()}`;
-      const assistantMessage = {
-        id: assistantMessageId,
+      },
+      {
+        id: assistantId,
         content: "",
         role: "assistant",
         mood: "default",
         timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, assistantMessage]);
+      },
+    ]);
 
-      const response = await chatStream(
-        query,
-        currentSessionId || "",
-        false,
-        false
-      );
+    const { promise } = startChatStream({
+      query,
+      sessionId: currentSessionId || "",
+      enableTts: false,
+      asyncMode: false,
+      onContent: ({ content, session_id, mood }) => {
+        streamedText += content || "";
+        ensureSessionId(session_id);
+        updateAssistant(streamedText, mood);
+      },
+      onComplete: ({ content, session_id, mood }) => {
+        const finalText = content ?? streamedText;
+        streamedText = finalText;
+        ensureSessionId(session_id);
+        updateAssistant(finalText, mood);
+      },
+      onError: (err) => {
+        console.error("流式请求失败:", err);
+        setMessages((prev) => prev.filter((msg) => msg.id !== assistantId));
+        Taro.showToast({
+          title: err?.message || "发送消息失败",
+          icon: "none",
+        });
+      },
+    });
 
-      if (response) {
-        if (response.session_id && !currentSessionId) {
-          setCurrentSessionId(response.session_id);
+    promise
+      .then((res) => {
+        if (res && !streamedText) {
+          ensureSessionId(res.session_id);
+          updateAssistant(
+            res.content || res.message || res.answer || "",
+            res.mood || "default"
+          );
         }
-
-        const assistantContent = response.content || response.message || response.answer || "";
-        const assistantMood = response.mood || "default";
-
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === assistantMessageId
-              ? {
-                  ...msg,
-                  content: assistantContent,
-                  mood: assistantMood,
-                }
-              : msg
-          )
-        );
-      }
-    } catch (error) {
-      console.error("发送消息失败:", error);
-      
-      if (assistantMessageId) {
-        setMessages((prev) => prev.filter((msg) => msg.id !== assistantMessageId));
-      }
-      
-      Taro.showToast({
-        title: error.message || "发送消息失败",
-        icon: "none",
+      })
+      .catch((error) => {
+        console.error("发送消息失败:", error);
+        setMessages((prev) => prev.filter((msg) => msg.id !== assistantId));
+        Taro.showToast({
+          title: error.message || "发送消息失败",
+          icon: "none",
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   return (
